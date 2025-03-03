@@ -80,6 +80,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // user
+    app.get("/user/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await usersCollection.findOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
