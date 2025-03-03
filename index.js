@@ -93,6 +93,12 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // assigned
+    app.get("/assigned", async (req, res) => {
+      const cursor = assignedCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
