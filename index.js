@@ -87,6 +87,12 @@ async function run() {
       const result = await usersCollection.findOne(query);
       res.send(result);
     });
+    // unemployed
+    app.get("/unemployed", async (req, res) => {
+      const cursor = employeesCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
