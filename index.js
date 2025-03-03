@@ -72,6 +72,14 @@ async function run() {
       });
       res.send({ token });
     });
+
+    // Reading
+    // users
+    app.get("/users", async (req, res) => {
+      const cursor = usersCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
