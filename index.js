@@ -105,6 +105,13 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // hr
+    app.get("/hr/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await hrsCollection.findOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
