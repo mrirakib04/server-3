@@ -112,6 +112,13 @@ async function run() {
       const result = await hrsCollection.findOne(query);
       res.send(result);
     });
+    // team
+    app.get("/team/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { hiredBy: email };
+      const result = await teamsCollection.find(query).toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
