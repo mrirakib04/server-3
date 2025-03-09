@@ -132,6 +132,16 @@ async function run() {
       const result = await assetsCollection.find(query).toArray();
       res.send(result);
     });
+    // quantity assets
+    app.get("/assets/quantity/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { owner: email };
+      const result = await assetsCollection
+        .find(query)
+        .sort({ quantity: 1 })
+        .toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
