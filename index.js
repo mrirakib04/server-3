@@ -142,6 +142,18 @@ async function run() {
         .toArray();
       res.send(result);
     });
+    // search asset
+    app.get("/asset/search/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = req.query.query;
+      const regex = new RegExp(query, "i");
+      const cursor = assetsCollection.find({
+        name: regex,
+        owner: email,
+      });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
