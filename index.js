@@ -161,6 +161,13 @@ async function run() {
       const result = await assetsCollection.findOne(query);
       res.send(result);
     });
+    // limited assets
+    app.get("/assets/limited", async (req, res) => {
+      const email = req.query.query;
+      const query = { owner: email, quantity: { $lt: 10 } };
+      const result = await assetsCollection.find(query).limit(10).toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
