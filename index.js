@@ -168,6 +168,13 @@ async function run() {
       const result = await assetsCollection.find(query).limit(10).toArray();
       res.send(result);
     });
+    // employee
+    app.get("/employee/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await assignedCollection.findOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
