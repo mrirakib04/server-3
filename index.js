@@ -189,6 +189,13 @@ async function run() {
       const result = await pendingCollection.find(query).limit(4).toArray();
       res.send(result);
     });
+    // hr pending requests
+    app.get("/pending/hr/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { requestFor: email };
+      const result = await pendingCollection.find(query).toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
