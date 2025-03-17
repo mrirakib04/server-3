@@ -196,6 +196,18 @@ async function run() {
       const result = await pendingCollection.find(query).toArray();
       res.send(result);
     });
+    // search pending request
+    app.get("/pending/search/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = req.query.query;
+      const regex = new RegExp(query, "i");
+      const cursor = pendingCollection.find({
+        name: regex,
+        requestFor: email,
+      });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
