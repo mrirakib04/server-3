@@ -208,6 +208,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // limited pending requests
+    app.get("/pending/recent/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = pendingCollection.find({
+        requestFor: email,
+      });
+      const result = await cursor.limit(4).toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
