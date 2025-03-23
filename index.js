@@ -229,6 +229,18 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // search asset request user
+    app.get("/asset/request/search/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = req.query.query;
+      const regex = new RegExp(query, "i");
+      const cursor = requestsCollection.find({
+        requestByEmail: email,
+        name: regex,
+      });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
