@@ -241,6 +241,15 @@ async function run() {
       const result = await cursor.toArray();
       res.send(result);
     });
+    // asset requests
+    app.get("/asset/requests/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = requestsCollection.find({
+        requestByEmail: email,
+      });
+      const result = await cursor.toArray();
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
