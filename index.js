@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 import jwt from "jsonwebtoken";
+import moment from "moment";
 import dotenv from "dotenv";
 dotenv.config();
 
@@ -249,6 +250,27 @@ async function run() {
       });
       const result = await cursor.toArray();
       res.send(result);
+    });
+    // monthly requests
+    app.get("/monthly/requests/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = requestsCollection.find({
+        requestByEmail: email,
+      });
+      const result = await cursor.toArray();
+      // filtering
+      const currentMonth = moment().format("MM");
+      const currentYear = moment().format("YYYY");
+      const filteredRequests = result.filter((request) => {
+        if (!request.requestDate) return false;
+        const date = moment(request.requestDate, "DD-MM-YYYY hh:mma");
+        return (
+          date.isValid() &&
+          date.format("MM") === currentMonth &&
+          date.format("YYYY") === currentYear
+        );
+      });
+      res.send(filteredRequests);
     });
   } finally {
     // Ensures that the client will close when you finish/error
