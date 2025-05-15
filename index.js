@@ -272,6 +272,14 @@ async function run() {
       });
       res.send(filteredRequests);
     });
+
+    // posting
+    // users
+    app.post("/users", async (req, res) => {
+      const newUser = req.body;
+      const result = await usersCollection.insertOne(newUser);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
