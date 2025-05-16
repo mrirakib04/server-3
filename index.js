@@ -280,6 +280,12 @@ async function run() {
       const result = await usersCollection.insertOne(newUser);
       res.send(result);
     });
+    // hrs
+    app.post("/hrs", async (req, res) => {
+      const newHR = req.body;
+      const result = await hrsCollection.insertOne(newHR);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
