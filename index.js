@@ -298,6 +298,12 @@ async function run() {
       const result = await assignedCollection.insertOne(assignedEmployee);
       res.send(result);
     });
+    // team
+    app.post("/team", async (req, res) => {
+      const addEmployeeInTeam = req.body;
+      const result = await teamsCollection.insertOne(addEmployeeInTeam);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
