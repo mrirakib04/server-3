@@ -310,6 +310,12 @@ async function run() {
       const paymentResult = await paymentsCollection.insertOne(payment);
       res.send(paymentResult);
     });
+    // assets
+    app.post("/assets", async (req, res) => {
+      const asset = req.body;
+      const result = await assetsCollection.insertOne(asset);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
