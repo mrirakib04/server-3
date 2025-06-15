@@ -316,6 +316,12 @@ async function run() {
       const result = await assetsCollection.insertOne(asset);
       res.send(result);
     });
+    // requests
+    app.post("/requests", async (req, res) => {
+      const reqDoc = req.body;
+      const result = await requestsCollection.insertOne(reqDoc);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
