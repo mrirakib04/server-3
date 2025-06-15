@@ -304,6 +304,12 @@ async function run() {
       const result = await teamsCollection.insertOne(addEmployeeInTeam);
       res.send(result);
     });
+    // payments
+    app.post("/payments", verifyToken, async (req, res) => {
+      const payment = req.body;
+      const paymentResult = await paymentsCollection.insertOne(payment);
+      res.send(paymentResult);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
