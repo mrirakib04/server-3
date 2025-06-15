@@ -322,6 +322,12 @@ async function run() {
       const result = await requestsCollection.insertOne(reqDoc);
       res.send(result);
     });
+    // pending
+    app.post("/pending", async (req, res) => {
+      const reqDoc = req.body;
+      const result = await pendingCollection.insertOne(reqDoc);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
