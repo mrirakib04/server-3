@@ -345,6 +345,22 @@ async function run() {
         res.send({ message: "Payment successful." });
       }
     });
+    // hr-limit-increasement
+    app.patch("/hr/limit/:email", async (req, res) => {
+      const email = req.params.email;
+      const value = req.body.packageName;
+      const filter = { email: email };
+      const updateDoc = {
+        $set: {
+          packageName: value, // Update limit
+        },
+      };
+      const result = await hrsCollection.updateOne(filter, updateDoc);
+      console.log(result);
+      if (result.modifiedCount > 0) {
+        res.send({ message: "Payment successful." });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
