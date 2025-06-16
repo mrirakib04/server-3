@@ -328,6 +328,23 @@ async function run() {
       const result = await pendingCollection.insertOne(reqDoc);
       res.send(result);
     });
+
+    // updating
+    // hr-payment-status
+    app.patch("/hr/:email", async (req, res) => {
+      const email = req.params.email;
+      const filter = { email: email };
+      const updateDoc = {
+        $set: {
+          paymentStatus: "paid", // Update payment status to "paid"
+        },
+      };
+      const result = await hrsCollection.updateOne(filter, updateDoc);
+      console.log(result);
+      if (result.modifiedCount > 0) {
+        res.send({ message: "Payment successful." });
+      }
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
