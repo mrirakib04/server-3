@@ -375,6 +375,19 @@ async function run() {
       const result = await requestsCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+    // asset-quantity
+    app.patch("/quantity/update/:id", async (req, res) => {
+      const id = req.params.id;
+      const value = req.body.quantity;
+      const filter = { _id: new ObjectId(id) };
+      const updateDoc = {
+        $set: {
+          quantity: value, // Update quantity
+        },
+      };
+      const result = await assetsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
