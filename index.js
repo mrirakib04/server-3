@@ -388,6 +388,24 @@ async function run() {
       const result = await assetsCollection.updateOne(filter, updateDoc);
       res.send(result);
     });
+    // asset
+    app.put("/update/asset/:id", async (req, res) => {
+      const id = req.params.id;
+      if (!ObjectId.isValid(id)) {
+        return res.status(400).send({ error: "Invalid asset ID format" });
+      }
+      const filter = { _id: new ObjectId(id) };
+      const options = { upsert: true };
+      const updatedAsset = {
+        $set: req.body,
+      };
+      const result = await assetsCollection.updateOne(
+        filter,
+        updatedAsset,
+        options
+      );
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
