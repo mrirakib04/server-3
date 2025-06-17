@@ -361,6 +361,20 @@ async function run() {
         res.send({ message: "Payment successful." });
       }
     });
+    // request-approve-status
+    app.patch("/request/approve/:id", async (req, res) => {
+      const id = req.params.id;
+      const approveDate = req.body.approveDate;
+      const filter = { assetId: id, status: "pending" };
+      const updateDoc = {
+        $set: {
+          status: "approved", // Update status
+          approveDate: approveDate, // Update approveDate
+        },
+      };
+      const result = await requestsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
