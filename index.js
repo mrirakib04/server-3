@@ -406,6 +406,29 @@ async function run() {
       );
       res.send(result);
     });
+
+    // deleting
+    // unemployed
+    app.delete("/unemployed/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await employeesCollection.deleteOne(query);
+      res.send(result);
+    });
+    // assigned
+    app.delete("/assigned/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await assignedCollection.deleteOne(query);
+      res.send(result);
+    });
+    // team
+    app.delete("/team/:email", async (req, res) => {
+      const email = req.params.email;
+      const query = { email: email };
+      const result = await teamsCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
