@@ -450,6 +450,20 @@ async function run() {
       const result = await requestsCollection.deleteOne(query);
       res.send(result);
     });
+    // pending
+    app.delete("/pending/delete", async (req, res) => {
+      const reqQuery = req.query.query;
+      const query = { assetId: reqQuery, status: "pending" };
+      const result = await pendingCollection.deleteOne(query);
+      res.send(result);
+    });
+    // waiting
+    app.delete("/pending/delete/:id", async (req, res) => {
+      const id = req.params.id;
+      const query = { _id: new ObjectId(id) };
+      const result = await pendingCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
