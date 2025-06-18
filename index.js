@@ -429,6 +429,27 @@ async function run() {
       const result = await teamsCollection.deleteOne(query);
       res.send(result);
     });
+    // asset
+    app.delete("/asset/delete", async (req, res) => {
+      const reqQuery = req.query.query;
+      const query = { _id: new ObjectId(reqQuery) };
+      const result = await assetsCollection.deleteOne(query);
+      res.send(result);
+    });
+    // request
+    app.delete("/request/delete", async (req, res) => {
+      const reqQuery = req.query.query;
+      const query = { assetId: reqQuery, status: "pending" };
+      const result = await requestsCollection.deleteOne(query);
+      res.send(result);
+    });
+    // return
+    app.delete("/request/return/delete", async (req, res) => {
+      const reqQuery = req.query.query;
+      const query = { _id: new ObjectId(reqQuery) };
+      const result = await requestsCollection.deleteOne(query);
+      res.send(result);
+    });
   } finally {
     // Ensures that the client will close when you finish/error
     // await client.close();
