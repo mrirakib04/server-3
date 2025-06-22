@@ -165,8 +165,12 @@ async function run() {
     // limited assets
     app.get("/assets/limited", async (req, res) => {
       const email = req.query.query;
-      const query = { owner: email, quantity: { $lt: 10 } };
-      const result = await assetsCollection.find(query).limit(10).toArray();
+      const query = { owner: email };
+      const result = await assetsCollection
+        .find(query)
+        .sort({ quantity: 1 })
+        .limit(8)
+        .toArray();
       res.send(result);
     });
     // employee
@@ -369,6 +373,20 @@ async function run() {
       const updateDoc = {
         $set: {
           status: "approved", // Update status
+          approveDate: approveDate, // Update approveDate
+        },
+      };
+      const result = await requestsCollection.updateOne(filter, updateDoc);
+      res.send(result);
+    });
+    // request-reject-status
+    app.patch("/request/reject", async (req, res) => {
+      const id = req.query.query;
+      const approveDate = req.body.approveDate;
+      const filter = { assetId: id, status: "pending" };
+      const updateDoc = {
+        $set: {
+          status: "rejected", // Update status
           approveDate: approveDate, // Update approveDate
         },
       };
