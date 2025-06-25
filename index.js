@@ -276,6 +276,25 @@ async function run() {
       });
       res.send(filteredRequests);
     });
+    // returnable and non-returnable requests
+    app.get("/hr/chart/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = requestsCollection.find({
+        requestFor: email,
+      });
+      const result = await cursor.toArray();
+      const ReturnableReqests = result.filter(
+        (requests) => requests.type === "returnable"
+      );
+      const NonReturnableReqests = result.filter(
+        (requests) => requests.type === "non-returnable"
+      );
+      const RequestsForChart = [
+        { reqsType: "returnable", quantity: ReturnableReqests?.length },
+        { reqsType: "non-returnable", quantity: NonReturnableReqests?.length },
+      ];
+      res.send(RequestsForChart);
+    });
 
     // posting
     // users
