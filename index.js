@@ -295,6 +295,39 @@ async function run() {
       ];
       res.send(RequestsForChart);
     });
+    // top requested assets
+    app.get("/top/requested/:email", async (req, res) => {
+      const email = req.params.email;
+      const cursor = requestsCollection.aggregate([
+        {
+          $match: {
+            requestFor: email,
+          },
+        },
+        {
+          $group: {
+            _id: { name: "$name", type: "$type" },
+            count: { $sum: 1 },
+          },
+        },
+        {
+          $sort: { count: -1 },
+        },
+        {
+          $limit: 4,
+        },
+        {
+          $project: {
+            _id: 0,
+            name: "$_id.name",
+            type: "$_id.type",
+            count: 1,
+          },
+        },
+      ]);
+      const result = await cursor.toArray();
+      res.send(result);
+    });
 
     // posting
     // users
