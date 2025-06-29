@@ -2,6 +2,7 @@ import express from "express";
 import cors from "cors";
 import { MongoClient, ObjectId, ServerApiVersion } from "mongodb";
 import jwt from "jsonwebtoken";
+import cookieParser from "cookie-parser";
 import moment from "moment";
 import dotenv from "dotenv";
 dotenv.config();
@@ -13,15 +14,17 @@ const app = express();
 app.use(
   cors({
     origin: ["http://localhost:5173"],
+    credentials: true,
   })
 );
 app.use(express.json());
+app.use(cookieParser());
 // jwt verification
 const verifyToken = (req, res, next) => {
-  if (!req.headers.authorization) {
+  const token = req.cookies.token;
+  if (!token) {
     return res.status(401).send({ message: "unauthorized access" });
   }
-  const token = req.headers.authorization;
   jwt.verify(token, process.env.ACCESS_TOKEN_SECRET, (err, decoded) => {
     if (err) {
       return res.status(401).send({ message: "unauthorized access" });
@@ -71,7 +74,23 @@ async function run() {
       const token = jwt.sign(user, process.env.ACCESS_TOKEN_SECRET, {
         expiresIn: "1h",
       });
-      res.send({ token });
+      res
+        .cookie("token", token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "None",
+          maxAge: 60 * 60 * 1000,
+        })
+        .send({ success: true });
+    });
+    app.post("/logout", async (req, res) => {
+      res
+        .clearCookie("token", {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === "production",
+          sameSite: "None",
+        })
+        .send({ success: true });
     });
 
     // Reading
